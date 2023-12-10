@@ -1,5 +1,6 @@
 package com.csit321.bloodcount.Service;
 
+import com.csit321.bloodcount.Entity.BloodRequestDTO;
 import com.csit321.bloodcount.Entity.BloodRequestEntity;
 import com.csit321.bloodcount.Entity.UserEntity;
 import com.csit321.bloodcount.Repository.BloodRequestRepository;
@@ -14,6 +15,7 @@ import java.util.List;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 @Service
 public class BloodRequestService {
@@ -53,16 +55,26 @@ public class BloodRequestService {
         }
     }
 
-    public List<BloodRequestEntity> getAllBloodRequests() {
+    public List<BloodRequestDTO> getAllBloodRequests() {
         List<BloodRequestEntity> bloodRequests = bloodRequestRepository.findAll();
 
-        // Initialize lazy-loaded properties before returning
-        bloodRequests.forEach(bloodRequest -> {
-            Hibernate.initialize(bloodRequest.getUser());
-            // Initialize other lazy-loaded properties if needed
-        });
+        // Convert entities to DTOs
+        List<BloodRequestDTO> bloodRequestDTOs = bloodRequests.stream()
+                .map(this::convertToDTO)
+                .collect(Collectors.toList());
 
-        return bloodRequests;
+        return bloodRequestDTOs;
+    }
+
+    private BloodRequestDTO convertToDTO(BloodRequestEntity bloodRequest) {
+        return new BloodRequestDTO(
+                bloodRequest.getRequestId(),
+                bloodRequest.getBloodType(),
+                bloodRequest.getQuantity(),
+                bloodRequest.getRequestDate(),
+                bloodRequest.getUser()
+                // Set other fields as needed
+        );
     }
 
     @Transactional
@@ -115,6 +127,7 @@ public class BloodRequestService {
             throw new RuntimeException("Failed to delete blood request.", e);
         }
     }
+
 
     private boolean isValidContactInfo(String contactInfo) {
         // Check if contactInfo is 11 digits starting with 09

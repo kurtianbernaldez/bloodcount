@@ -2,6 +2,7 @@ package com.csit321.bloodcount;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
@@ -33,5 +34,9 @@ public class BloodcountApplication {
 						.maxAge(3600);
 			}
 		};
+	}
+	@Bean
+	public Jackson2ObjectMapperBuilderCustomizer customizeJackson() {
+		return builder -> builder.failOnEmptyBeans(false);
 	}
 }

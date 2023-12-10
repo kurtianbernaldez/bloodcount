@@ -10,6 +10,7 @@
 
     @Entity
     @Table(name = "tbluser")
+    @JsonIgnoreProperties({"hibernateLazyInitializer", "handler", "bloodRequests"})
     public class UserEntity {
         @Id
         @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -1,5 +1,6 @@
 package com.csit321.bloodcount.Controller;
 
+import com.csit321.bloodcount.Entity.BloodRequestDTO;
 import com.csit321.bloodcount.Entity.BloodRequestEntity;
 import com.csit321.bloodcount.Service.BloodRequestService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,7 +20,7 @@ public class BloodRequestController {
     }
 
     @GetMapping("/getAllBloodRequests")
-    public List<BloodRequestEntity> getAllBloodRequests() {
+    public List<BloodRequestDTO> getAllBloodRequests() {
         return bloodRequestService.getAllBloodRequests();
     }
 
