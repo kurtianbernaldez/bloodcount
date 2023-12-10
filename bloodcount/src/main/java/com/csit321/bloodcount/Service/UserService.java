@@ -8,10 +8,12 @@
     import org.springframework.security.crypto.password.PasswordEncoder;
     import org.springframework.stereotype.Service;
     import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+    import org.springframework.web.bind.annotation.CrossOrigin;
 
     import java.util.List;
     import java.util.NoSuchElementException;
 
+    @CrossOrigin(origins = "http://localhost:3000")
     @Service
     public class UserService {
 
@@ -65,7 +67,7 @@
             }
         }
 
-        private boolean isValidPassword(String password) {
+        public boolean isValidPassword(String password) {
             // Password should be at least 8 characters with 1 uppercase letter
             return password.matches("^(?=.*[A-Z]).{8,}$");
         }

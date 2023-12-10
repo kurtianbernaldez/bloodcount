@@ -12,11 +12,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
+                .cors().and()
                 .authorizeRequests()
-                .antMatchers("/public/**", "/user/**", "/donor/**", "/hospital/**", "/bloodbank/**", "/bloodrequest/**", "/admin/**").permitAll() // Allow public access to /public/** and /user/**
+                .antMatchers("/public/**", "/user/**", "/donor/**", "/hospital/**", "/bloodbank/**", "/bloodrequest/**", "/admin/**").permitAll()
                 .anyRequest().authenticated()
                 .and()
-                .csrf().disable() // Disable CSRF protection (for simplicity in this example; not recommended for production)
-                .httpBasic().disable(); // Disable basic authentication
+                .csrf().disable()
+                .httpBasic().disable();
     }
 }

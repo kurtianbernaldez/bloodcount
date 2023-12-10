@@ -11,6 +11,7 @@ import java.util.List;
 @RestController
 @RequestMapping("/user")
 @Validated
+@CrossOrigin(origins = "http://localhost:3000")
 public class UserController {
     @Autowired
     private UserService userService;
@@ -33,5 +34,10 @@ public class UserController {
     @DeleteMapping("/deleteUser/{userId}")
     public String deleteUser(@PathVariable int userId) {
         return userService.deleteUser(userId);
+    }
+
+    @GetMapping("/validatePassword")
+    public boolean validatePassword(@RequestParam String password) {
+        return userService.isValidPassword(password);
     }
 }
