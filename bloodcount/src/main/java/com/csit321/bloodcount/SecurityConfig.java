@@ -5,6 +5,8 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 
+import javax.servlet.http.HttpServletResponse;
+
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
@@ -18,6 +20,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and()
                 .csrf().disable()
-                .httpBasic().disable();
+                .httpBasic().disable()
+                .formLogin().disable()
+                .logout().disable()
+                .exceptionHandling().authenticationEntryPoint((request, response, authException) -> {
+                    System.out.println("Authentication error: " + authException.getMessage());
+                    response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Authentication error");
+                });
     }
 }

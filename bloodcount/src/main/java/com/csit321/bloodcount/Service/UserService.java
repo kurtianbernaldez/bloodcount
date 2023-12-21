@@ -12,6 +12,7 @@
 
     import java.util.List;
     import java.util.NoSuchElementException;
+    import java.util.Optional;
 
     @CrossOrigin(origins = "http://localhost:3000")
     @Service
@@ -42,9 +43,6 @@
             UserEntity user = userRepository.findById(userId)
                     .orElseThrow(() -> new NoSuchElementException("User " + userId + " does not exist!"));
 
-            user.setFirstName(newUserDetails.getFirstName());
-            user.setLastName(newUserDetails.getLastName());
-            user.setGender(newUserDetails.getGender());
             user.setEmail(newUserDetails.getEmail());
             user.setUserType(newUserDetails.getUserType());
 
@@ -54,16 +52,43 @@
 
 
         public String deleteUser(int userId) {
-            UserEntity user = userRepository.findById(userId)
-                    .orElse(null);
+            Optional<UserEntity> optionalUser = userRepository.findById(userId);
 
-            if (user != null) {
+            if (optionalUser.isPresent()) {
+                UserEntity user = optionalUser.get();
+
+                if (user != null) {
+                    user.setDonor(null);
+
+                    user.setUserType(UserType.USER);
+                    userRepository.save(user);
+
+                    return "User " + userId + " is successfully deleted!";
+                }
+
+                // If there are other relationships, handle them in a similar way
+
                 // Mark the user as deleted
                 user.setDeleted(true);
                 userRepository.save(user);
+
                 return "User " + userId + " is marked as deleted.";
             } else {
                 return "User " + userId + " does not exist.";
+            }
+        }
+        public UserEntity markUserAsDeleted(int userId) {
+            try {
+                UserEntity user = userRepository.findById(userId)
+                        .orElseThrow(() -> new NoSuchElementException("User " + userId + " does not exist!"));
+
+                // Mark the user as deleted
+                user.setDeleted(true);
+
+                // Save the changes using userRepository.save
+                return userRepository.saveAndFlush(user);
+            } catch (Exception e) {
+                throw new RuntimeException("Error marking user as deleted", e);
             }
         }
 

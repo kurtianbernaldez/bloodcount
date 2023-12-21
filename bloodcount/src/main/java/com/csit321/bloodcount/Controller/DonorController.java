@@ -24,8 +24,8 @@ public class DonorController {
         return donorService.getAllDonors();
     }
 
-    @PutMapping("/updateDonor")
-    public DonorEntity updateDonor(@RequestParam int donorId, @RequestBody DonorEntity newDonorDetails){
+    @PutMapping("/updateDonor/{donorId}")
+    public DonorEntity updateDonor(@PathVariable int donorId, @RequestBody DonorEntity newDonorDetails){
         return donorService.updateDonor(donorId, newDonorDetails);
     }
 

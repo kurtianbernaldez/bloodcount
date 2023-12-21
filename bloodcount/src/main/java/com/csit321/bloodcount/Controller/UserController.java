@@ -26,14 +26,19 @@ public class UserController {
         return userService.getAllUsers();
     }
 
-    @PutMapping("/updateUser")
-    public UserEntity updateUser(@RequestParam int userId, @RequestBody UserEntity newUserDetails) {
+    @PutMapping("/updateUser/{userId}")
+    public UserEntity updateUser(@PathVariable int userId, @RequestBody UserEntity newUserDetails) {
         return userService.updateUser(userId, newUserDetails);
     }
 
     @DeleteMapping("/deleteUser/{userId}")
     public String deleteUser(@PathVariable int userId) {
         return userService.deleteUser(userId);
+    }
+
+    @PutMapping("/markAsDeleted/{userId}")
+    public UserEntity markUserAsDeleted(@PathVariable int userId) {
+        return userService.markUserAsDeleted(userId);
     }
 
     @GetMapping("/validatePassword")

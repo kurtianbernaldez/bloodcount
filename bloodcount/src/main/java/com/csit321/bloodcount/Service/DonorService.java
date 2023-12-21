@@ -64,14 +64,13 @@ public class DonorService {
     public DonorEntity updateDonor(int donorId, DonorEntity newDonorDetails) {
         DonorEntity donor = donorRepository.findById(donorId)
                 .orElseThrow(() -> new NoSuchElementException("Donor " + donorId + " does not exist!"));
-        if (!isValidContactInfo(donor.getContactInfo())) {
+        if (!isValidContactInfo(newDonorDetails.getContactInfo())) {
             // Handle validation error
             throw new IllegalArgumentException("Invalid contact info. It should be 11 digits starting with 09.");
         }
 
         donor.setBloodType(newDonorDetails.getBloodType());
         donor.setContactInfo(newDonorDetails.getContactInfo());
-        donor.setLocation(newDonorDetails.getLocation());
 
         UserEntity existingUser = donor.getUser();
 
